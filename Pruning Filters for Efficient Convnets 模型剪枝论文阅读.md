@@ -40,3 +40,7 @@
 Le Cun et al.（1989）：Optimal Brain Damage  ==> Hassibi & Stork(1993): Optimal Brain Surgeon  ==> Mariet & Sra (2016) : Diversity Networks[3]。  
 在不改变原滤波器数目的情况下，将权值矩阵表示为两个较小矩阵的低秩乘积进行近似卷积运算 ==> 其他减少卷积开销的方法包括使用基于FFT的卷积、使用Winograd算法进行快速卷积 ==> 此外,量化和二值化可用于减少模型大小和降低计算开销 ==> 除了这些技术外，我们的方法还可以减少计算成本，而不会产生额外的开销。  
 
+
+### 方法
+先概况结论_：
+1. 第i层有一个卷积层：(C_out,C_in,K,K),对C_out维度去除某一个滤波器，会导致第i+1层的卷积层少了一个输入通道：（C_out,C_in-1,K,K）。
