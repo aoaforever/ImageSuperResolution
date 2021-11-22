@@ -1,15 +1,35 @@
 ## 参考文献：
-[[1](https://arxiv.org/abs/1608.08710)] Li, Hao, Asim Kadav, Igor Durdanovic, Hanan Samet, and Hans Peter Graf. **"Pruning filters for efficient convnets."** arXiv preprint arXiv:1608.08710 (2016).
+[[1](https://arxiv.org/abs/1608.08710)] Li, Hao, Asim Kadav, Igor Durdanovic, Hanan Samet, and Hans Peter Graf. **"Pruning filters for efficient convnets."** arXiv preprint arXiv:1608.08710 (2016).  
+
+[2] Song Han, Xingyu Liu, Huizi Mao, Jing Pu, Ardavan Pedram, Mark A Horowitz, and William JDally. EIE: Efficient Inference Engine on Compressed Deep Neural Network. In ISCA, 2016a.
 
 --- 
 ### 摘要
 由于计算机计算能力和存储能力的提升，CNNs在不同领域都大放异彩。  
 近来有些工作朝着对不同网络层的权重进行剪枝和压缩方向进行，从而近乎不降低准确率的同时，达到快速推理的目的。  
 虽然，基于量的权值剪枝(magnitude-based pruning of weights)大大减少了全连接层的参数，但由于剪枝网络的不规则稀疏性，可能不能充分降低卷积层的计算成本。  
-作者提出了一种方法：   
+作者[1]提出了一种方法：   
 &emsp;将那些对于准确率影响不大的整个滤波器进行剪枝。这么做将会大量减少计算量。  
 &emsp;  
 相比于对某个权重进行剪枝，作者的方法不会导致稀疏稀疏连接模式(sparse connectivity patterns)。因此，它不需要稀疏卷积库的支持，只需要普通的blas库就可以执行剪枝后的卷积操作。  
 大量的实验表明，这种方法可以减少高达34%的VGG-16的推理时间、38%的ResNet-110的推理时间，在CIFAR10上测试，并且通过重新训练剪枝后的网络，能够达到和剪枝前的网络相似的准确度。  
 
 ###  引言
+随着网络深度加深，必然带来参数量和卷积操作的增加。在嵌入式设备或者移动设备上，这种高容量的网络会推理缓慢。对于这些应用程序，除了精度，计算效率和较小的网络规模是关键的启用因素。  
+此外，对于提供图像搜索和图像分类api的web服务来说，它们的时间预算通常为每秒数十万张图像提供服务，因此推断时间较低是非常有利的。  
+有大量的工作是做模型压缩的：(Le Cun et al. (1989); Hassibi & Stork (1993); Srinivas & Babu (2015); Han et al.(2015); Mariet & Sra (2016)).  
+最近有些工作Han et al. (2015; 2016b) 对AlexNet和VGGNet压缩是通过裁剪那些值比较小的权重，然后重新训练达到大致的准确率。  
+但是，修剪参数并不一定会减少计算时间，因为删除的参数大部分来自计算成本较低的全连接层，如VGG-16的全连接层占总参数的90%，但这个全连接层的flop小于总浮点运算(FLOP)的1%。  
+(Iandola et al. (2016))证明了卷积层也可以这么的被压缩加速，但是需要额外的稀疏BLAS库的支持，或者专用的硬件支持[2]。  
+使用稀疏操作在cnn上提供加速的现代库通常是有限的,维护稀疏的数据结构也会产生额外的存储开销，这对于低精度权值来说是非常重要的。  
+&emsp;  
+
+有些工作是设计更高效的结构，如：  
+1. 用全局池化层代替全连接层，大量的减少了参数量。
+2. 在尽可能早的下采样图像来减小特征图的大小。  
+不管怎样，随着网络层数加深，卷积层的计算量仍然是个问题。  
+&emsp;  
+
+
+
+
