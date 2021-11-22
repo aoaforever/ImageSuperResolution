@@ -3,6 +3,8 @@
 
 [2] Song Han, Xingyu Liu, Huizi Mao, Jing Pu, Ardavan Pedram, Mark A Horowitz, and William JDally. EIE: Efficient Inference Engine on Compressed Deep Neural Network. In ISCA, 2016a.
 
+[3] Zelda Mariet and Suvrit Sra. Diversity Networks. In ICLR, 2016.
+
 --- 
 ### 摘要
 由于计算机计算能力和存储能力的提升，CNNs在不同领域都大放异彩。  
@@ -32,4 +34,9 @@
 
 
 **大容量的cnn在不同的滤波器和特征通道之间通常存在显著的冗余。** 在这项工作中，作者的重点是通过修剪过滤器来减少训练有素的cnn的计算成本。与通过网络进行权值剪枝相比，滤波器剪枝是一种自然结构的剪枝方式，不引入稀疏性，因此不需要使用稀疏库或任何专门的硬件。通过减少矩阵乘法的数量，剪枝滤波器的数量与加速度直接相关，这很容易为目标加速进行调整。此外，我们采用一次修剪和再训练策略，而不是分层迭代微调(再训练)，这是修剪非常深的网络的关键。最后，我们观察到，即使是ResNets，比AlexNet或VGGNet也有明显更少的参数和推理成本，仍然有大约30%的FLOP减少而不牺牲太多的准确性。 我们在ResNets中对卷积层进行敏感性分析，改进了卷积层对ResNets的理解。  
+
+
+### 相关工作
+Le Cun et al.（1989）：Optimal Brain Damage  ==> Hassibi & Stork(1993): Optimal Brain Surgeon  ==> Mariet & Sra (2016) : Diversity Networks[3]。  
+在不改变原滤波器数目的情况下，将权值矩阵表示为两个较小矩阵的低秩乘积进行近似卷积运算 ==> 其他减少卷积开销的方法包括使用基于FFT的卷积、使用Winograd算法进行快速卷积 ==> 此外,量化和二值化可用于减少模型大小和降低计算开销 ==> 除了这些技术外，我们的方法还可以减少计算成本，而不会产生额外的开销。  
 
